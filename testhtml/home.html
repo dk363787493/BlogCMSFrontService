@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LovePets宠物爱好者网站</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+        #logo {
+            font-size: 3em;
+            color: #FF69B4; /* 你可以选择你喜欢的颜色 */
+            text-shadow: 2px 2px 4px #000000; /* 给文字添加阴影效果 */
+            text-align: center;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+        #navigation {
+            background-color: #fff;
+            text-align: center;
+            padding: 10px 0;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        #navigation a {
+            display: inline-block;
+            color: black; /* 导航链接颜色 */
+            text-align: center;
+            padding: 10px 15px;
+            text-decoration: none;
+            transition: background-color 0.3s ease;
+        }
+        #navigation a:hover {
+            background-color: #f4f4f4;
+        }
+        #searchForm {
+            max-width: 300px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #fff;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        #searchForm label {
+            display: block;
+            margin-bottom: 5px;
+        }
+        #searchForm select,
+        #searchForm input[type="text"] {
+            margin-bottom: 10px;
+            padding: 10px;
+            border-radius: 5px;
+            border: 1px solid #ddd;
+            width: 100%; /* 充满整个宽度 */
+            box-sizing: border-box; /* 防止box model引起的问题 */
+        }
+        #searchForm input[type="submit"] {
+            padding: 10px 20px;
+            border-radius: 5px;
+            border: none;
+            background-color: #FF69B4;
+            color: white;
+            cursor: pointer;
+            width: 100%;
+        }
+        #searchForm input[type="submit"]:hover {
+            background-color: #ff85c1;
+        }
+    </style>
+</head>
+<body>
+<div id="logo">LovePets</div>
+<div id="navigation">
+    <a href="home.html">Home</a>
+    <a href="blog.html">Blog</a>
+    <a href="shopping.html">Shopping</a>
+    <a href="about.html">About Us</a>
+</div>
+<div id="content">
+    <form id="searchForm">
+        <label for="websiteSelect">WebSite</label>
+        <select id="websiteSelect">
+            <option value="siteA">Site A</option>
+            <option value="siteB">Site B</option>
+            <!-- 其他网站选项 -->
+        </select>
+        <label for="searchKeyword">Key Word</label>
+        <input type="text" id="searchKeyword" name="keyword" placeholder="Search...">
+        <input type="submit" value="Search">
+    </form>
+    <!-- 这里是home.html的其他内容 -->
+</div>
+</body>
+</html>

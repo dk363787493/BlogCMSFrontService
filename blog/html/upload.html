@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Article Upload Page</title>
+    <!-- 引入 TinyMCE -->
+    <script src="https://cdn.tiny.cloud/1/no-api-key/tinymce/5/tinymce.min.js" referrerpolicy="origin"></script>
+    <script>
+        tinymce.init({
+            selector: '#article-content',
+            plugins: 'advlist autolink lists link image charmap print preview hr anchor pagebreak',
+            toolbar_mode: 'floating',
+        });
+    </script>
+</head>
+<body>
+
+<h1>Upload Your Article</h1>
+
+<form id="upload-form">
+    <label for="photo">Choose a photo:</label>
+    <input type="file" id="photo" name="photo" accept="image/*"><br><br>
+    <input type="button" id="upload-button" value="Upload Photo">
+</form>
+
+<!--<form id="upload-article-form">-->
+<!--    <input type="text" id="article-title" placeholder="Enter article title"><br><br>-->
+<!--    &lt;!&ndash; 富文本编辑器区域 &ndash;&gt;-->
+<!--    <textarea id="article-content"></textarea><br><br>-->
+
+<!--    <input type="button" id="upload-article-button" value="Upload Article">-->
+<!--</form>-->
+
+
+<div id="upload-status"></div>
+
+<script src="upload.js"></script>
+
+</body>
+</html>

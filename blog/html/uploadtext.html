@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title><!DOCTYPE html>
+        <html lang="en">
+        <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Article Upload Page</title>
+    <!-- 引入 TinyMCE -->
+    <script src="https://cdn.tiny.cloud/1/m0xvq2i00ke5rfmskhokyqr46ohz6fytxp2tu5uwjlz15kt9/tinymce/7/tinymce.min.js" referrerpolicy="origin"></script>
+    <script>
+        // tinymce.init({
+        //     selector: 'textarea',
+        //     plugins: 'image anchor autolink charmap codesample emoticons image link lists media searchreplace table visualblocks wordcount checklist mediaembed casechange export formatpainter pageembed linkchecker a11ychecker tinymcespellchecker permanentpen powerpaste advtable advcode editimage advtemplate ai mentions tinycomments tableofcontents footnotes mergetags autocorrect typography inlinecss markdown',
+        //     toolbar: 'image｜undo redo | blocks fontfamily fontsize | bold italic underline strikethrough | link image media table mergetags | addcomment showcomments | spellcheckdialog a11ycheck typography | align lineheight | checklist numlist bullist indent outdent | emoticons charmap | removeformat',
+        //     tinycomments_mode: 'embedded',
+        //     tinycomments_author: 'Author name',
+        //     mergetags_list: [
+        //         { value: 'First.Name', title: 'First Name' },
+        //         { value: 'Email', title: 'Email' },
+        //     ],
+        //     ai_request: (request, respondWith) => respondWith.string(() => Promise.reject("See docs to implement AI Assistant")),
+        // });
+        tinymce.init({
+            selector: 'textarea',
+            plugins: 'image',
+            toolbar: 'insertfile image',
+            images_upload_url: 'http://localhost:8080/upload', // 这里应该是你服务器端接收图片上传的脚本
+            automatic_uploads: true,
+            file_picker_types: 'image', // 限制只能选择图片类型文件
+            file_picker_callback: function(cb, value, meta) {
+                var input = document.createElement('input');
+                input.setAttribute('type', 'file');
+                input.setAttribute('accept', 'image/*');
+
+                input.onchange = function() {
+                    var file = this.files[0];
+                    var reader = new FileReader();
+                    reader.onload = function () {
+                        var id = 'blobid' + (new Date()).getTime();
+                        var blobCache =  tinymce.activeEditor.editorUpload.blobCache;
+                        var base64 = reader.result.split(',')[1];
+                        var blobInfo = blobCache.create(id, file, base64);
+                        blobCache.add(blobInfo);
+
+                        // 调用回调函数，并传入选中的图片的路径
+                        cb(blobInfo.blobUri(), { title: file.name });
+                    };
+                    reader.readAsDataURL(file);
+                };
+
+                input.click();
+            }
+        });
+    </script>
+</head>
+<body>
+
+<h1>Upload Your Article</h1>
+
+<form id="upload-article-form">
+    <input type="text" id="article-title" placeholder="Enter article title"><br><br>
+    <!-- 富文本编辑器区域 -->
+    <textarea id="article-content"></textarea><br><br>
+
+    <input type="button" id="upload-article-button" value="Upload Article">
+</form>
+
+<div id="upload-article-status"></div>
+
+<script src="article-upload.js"></script>
+
+</body>
+</html>
+</title>
+</head>
+<body>
+<script>
+    document.getElementById('upload-article-button').addEventListener('click', function () {
+        // 获取文章标题和内容
+        const articleTitle = document.getElementById('article-title').value;
+        const articleContent = tinymce.get('article-content').getContent();
+
+        // 创建 FormData 对象以发送数据
+        const formData = new FormData();
+        formData.append('title', articleTitle);
+        formData.append('content', articleContent);
+
+        // 发送请求
+        fetch('http://localhost:8080/upload-article', {
+            method: 'POST',
+            body: formData
+        })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    document.getElementById('upload-article-status').textContent = 'Article uploaded successfully!';
+                } else {
+                    document.getElementById('upload-article-status').textContent = 'Upload failed.';
+                }
+            })
+            .catch((error) => {
+                console.error('Error:', error);
+                document.getElementById('upload-article-status').textContent = 'Error uploading article.';
+            });
+    });
+</script>
+</body>
+</html>

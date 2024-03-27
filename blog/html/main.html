@@ -1,0 +1,96 @@
+<!--<!DOCTYPE html>-->
+<!--<html lang="en">-->
+<!--<head>-->
+<!--    <meta charset="UTF-8">-->
+<!--    <meta name="viewport" content="width=device-width, initial-scale=1.0">-->
+<!--    <title>CMS Article Upload with Images</title>-->
+<!--</head>-->
+<!--<body>-->
+
+<!--<h1>Upload Article</h1>-->
+
+<!--<form id="article-form">-->
+<!--    <label for="title">Title:</label>-->
+<!--    <input type="text" id="title" name="title" required><br><br>-->
+
+<!--    <label for="content">Content:</label>-->
+<!--    <textarea id="content" name="content" rows="10" cols="50" required></textarea><br><br>-->
+
+<!--    <label for="image">Insert image:</label>-->
+<!--    <input type="file" id="image" name="image" accept="image/*">-->
+<!--    <button type="button" id="insert-image">Insert Image at Cursor</button><br><br>-->
+
+<!--    <button type="submit">Submit</button>-->
+<!--</form>-->
+
+<!--<script src="script.js"></script>-->
+<!--</body>-->
+<!--</html>-->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Photo Upload and Embed Page</title>
+    <style>
+        #text-area {
+            width: 100%;
+            height: 300px;
+        }
+    </style>
+</head>
+<body>
+
+<h1>Upload Your Photo</h1>
+
+<!-- Upload form -->
+<form id="upload-form">
+    <label for="photo">Choose a photo:</label>
+    <input type="file" id="photo" name="photo" accept="image/*"><br><br>
+
+    <input type="button" id="upload-button" value="Upload Photo">
+</form>
+
+<div id="upload-status"></div>
+
+<!-- Text area for input -->
+<textarea id="text-area"></textarea>
+
+<script src="upload.js"></script>
+
+<script>
+    document.getElementById('upload-button').addEventListener('click', function() {
+        const photoInput = document.getElementById('photo');
+        const textArea = document.getElementById('text-area');
+        if (photoInput.files.length > 0) {
+            const formData = new FormData();
+            formData.append('photo', photoInput.files[0]);
+
+            fetch('http://localhost:8080/upload', {
+                method: 'POST',
+                body: formData
+            })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success && data.url) {
+                        // Append the image tag to the text area content
+                        textArea.value += `<img src="http://localhost:8080/photo/${data.url}" alt="Uploaded Photo">\n`;
+                        document.getElementById('upload-status').textContent = 'Photo uploaded successfully!';
+                    } else {
+                        document.getElementById('upload-status').textContent = 'Upload failed.';
+                    }
+                })
+                .catch((error) => {
+                    console.error('Error:', error);
+                    document.getElementById('upload-status').textContent = 'Error uploading photo.';
+                });
+        } else {
+            document.getElementById('upload-status').textContent = 'Please select a photo to upload.';
+        }
+    });
+</script>
+
+</body>
+</html>
+
